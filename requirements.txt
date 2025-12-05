@@ -1,0 +1,7 @@
+gunicorn
+flask
+psycopg2
+numpy
+pandas
+bokeh
+jinja2
