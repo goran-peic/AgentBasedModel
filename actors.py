@@ -1,4 +1,7 @@
 import numpy as np
+
+terrain_size = 50
+
 class Actor():
 
   def __init__(self, life, reproduction_rate, position):
@@ -51,7 +54,7 @@ class Sheep(Actor):
       reduced_reproduction_rate = (self.reproduction_rate/len(available_sheep)**3)/\
                                   ((self.reproduction_rate/len(available_sheep)**3) + (1 - self.reproduction_rate))
       if int(np.random.choice([0, 1], p=[1 - reduced_reproduction_rate, reduced_reproduction_rate])) == 1:
-        offspring = Grass(life_amount, self.reproduction_rate, self.position)
+        offspring = Sheep(life_amount, self.reproduction_rate, self.position)
         return offspring
       else: return None
     else: return None
@@ -81,7 +84,7 @@ class Wolf(Actor):
       reduced_reproduction_rate = (self.reproduction_rate/len(available_wolves)**3)/\
                                   ((self.reproduction_rate/len(available_wolves)**3) + (1 - self.reproduction_rate))
       if int(np.random.choice([0, 1], p=[1 - reduced_reproduction_rate, reduced_reproduction_rate])) == 1:
-        offspring = Grass(life_amount, self.reproduction_rate, self.position)
+        offspring = Wolf(life_amount, self.reproduction_rate, self.position)
         return offspring
       else: return None
     else: return None

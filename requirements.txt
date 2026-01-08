@@ -1,3 +1,4 @@
+# pip install -r requirements.txt
 gunicorn
 flask
 psycopg2
@@ -5,3 +6,4 @@ numpy
 pandas
 bokeh
 jinja2
+werkzeug

@@ -81,9 +81,10 @@ def Live(poplist, grass_life, sheep_life, wolf_life):
     poplistWithoutMe = [critter for critter in poplist if critter is not creature]
     creature.life -= 1
     creature.move()
-    if (isinstance(creature, Sheep) or isinstance(creature, Wolf)) and creature.eat(final_population):
+    if (isinstance(creature, Sheep) or isinstance(creature, Wolf)):
       creatures_to_eat = creature.eat(final_population)
-      final_population = [critter for critter in final_population if critter not in creatures_to_eat]
+      if creatures_to_eat:
+        final_population = [critter for critter in final_population if critter not in creatures_to_eat]
     if isinstance(creature, Grass): creature_offspring = creature.reproduce(grass_life, poplist)
     elif isinstance(creature, Sheep): creature_offspring = creature.reproduce(sheep_life, poplistWithoutMe)
     elif isinstance(creature, Wolf): creature_offspring = creature.reproduce(wolf_life, poplistWithoutMe)

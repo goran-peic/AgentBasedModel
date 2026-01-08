@@ -9,7 +9,6 @@ from bokeh.resources import CDN
 from jinja2 import Environment
 import re
 
-
 # env = Environment(extensions=['jinja2.ext.autoescape'])
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ITSASECRET"
