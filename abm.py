@@ -157,4 +157,4 @@ def index():
                            grass_life=grass_life, sheep_life=sheep_life, wolf_life=wolf_life, div1=div1, div2=div2, script_1=script_1, script_2=script_2, creature_plot=creature_plot)
 
 if __name__ == "__main__":
-  app.run(debug=True)
+  app.run(debug=False)
