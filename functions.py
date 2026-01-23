@@ -49,46 +49,31 @@ def seedActors(dataset, terrain_size, grass, sheep, wolves, grass_reproduction_r
                                 grass_life=grass_life, sheep_life=sheep_life, wolf_life=wolf_life)
   return list(list_of_grass + list_of_sheep + list_of_wolves)
 
-'''
-def Live(poplist, terrain_size, grass_life, sheep_life, wolf_life):
-  final_population = poplist[:]
-  for creature in poplist:
-    if creature.life <= 0 and creature in final_population:
-      final_population.remove(creature)
-    else:
-      poplistWithoutMe = poplist[:]
-      poplistWithoutMe.remove(creature)
-      creature.life -= 1
-      creature.move()
-      if (isinstance(creature, Sheep) or isinstance(creature, Wolf)) and creature.eat(final_population):
-        creatures_to_eat = creature.eat(final_population)
-        for creature in creatures_to_eat:
-          final_population.remove(creature)
-      if isinstance(creature, Grass): creature_offspring = creature.reproduce(grass_life, poplist)
-      elif isinstance(creature, Sheep): creature_offspring = creature.reproduce(sheep_life, poplistWithoutMe)
-      elif isinstance(creature, Wolf): creature_offspring = creature.reproduce(wolf_life, poplistWithoutMe)
-      else: creature_offspring = None
-      if creature_offspring is not None:
-        final_population.append(creature_offspring)
-#        if isinstance(creature_offspring, Grass): print("Grass just reproduced!!!!")
-#        elif isinstance(creature_offspring, Sheep): print("Sheep just REPRODUCED!!!!")
-  return final_population
-'''
 def Live(poplist, grass_life, sheep_life, wolf_life):
-  final_population = poplist[:]
-  final_population = [creature for creature in poplist if creature.life > 0 and creature in final_population]
-  for creature in poplist:
-    poplistWithoutMe = [critter for critter in poplist if critter is not creature]
+  # Only consider living creatures for action and interaction
+  living_pop = [c for c in poplist if c.life > 0]
+  final_population = living_pop[:]
+
+  for creature in living_pop:
+    # Check if creature is still in final_population (hasn't been eaten this turn)
+    if creature not in final_population:
+      continue
+
+    poplistWithoutMe = [critter for critter in living_pop if critter is not creature]
+
     creature.life -= 1
     creature.move()
+
     if (isinstance(creature, Sheep) or isinstance(creature, Wolf)):
       creatures_to_eat = creature.eat(final_population)
       if creatures_to_eat:
         final_population = [critter for critter in final_population if critter not in creatures_to_eat]
-    if isinstance(creature, Grass): creature_offspring = creature.reproduce(grass_life, poplist)
+
+    if isinstance(creature, Grass): creature_offspring = creature.reproduce(grass_life, living_pop)
     elif isinstance(creature, Sheep): creature_offspring = creature.reproduce(sheep_life, poplistWithoutMe)
     elif isinstance(creature, Wolf): creature_offspring = creature.reproduce(wolf_life, poplistWithoutMe)
     else: creature_offspring = None
+
     if creature_offspring is not None:
       final_population.append(creature_offspring)
 #      if isinstance(creature_offspring, Grass): print("Grass just reproduced!!!!")

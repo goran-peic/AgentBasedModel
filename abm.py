@@ -13,7 +13,6 @@ import re
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ITSASECRET"
 
-
 @app.route("/", methods=["GET", "POST"])
 def index():
   if request.method == "GET":
@@ -61,22 +60,22 @@ def index():
     creature_plot.background_fill_color = "#f4f4f4"
     creature_plot.min_border_left = 20
     creature_plot.background_fill_alpha = 0.68
-    creature_plot.xaxis.axis_label = "Iteration"; creature_plot.yaxis.axis_label = "Count"
-    creature_plot.border_fill_color = "black"; creature_plot.xaxis.axis_label_text_color = \
-      creature_plot.yaxis.axis_label_text_color = "white"
-    creature_plot.xaxis.major_tick_line_color = creature_plot.xaxis.minor_tick_line_color = \
-      creature_plot.yaxis.minor_tick_line_color = creature_plot.yaxis.major_tick_line_color = "white"
-    creature_plot.title.text_color = creature_plot.xaxis.major_label_text_color = \
-      creature_plot.yaxis.major_label_text_color = "white"
-    creature_plot.xaxis.axis_line_color = creature_plot.yaxis.axis_line_color = "white"
+    creature_plot.xaxis[0].axis_label = "Iteration"; creature_plot.yaxis[0].axis_label = "Count"
+    creature_plot.border_fill_color = "black"; creature_plot.xaxis[0].axis_label_text_color = \
+      creature_plot.yaxis[0].axis_label_text_color = "white"
+    creature_plot.xaxis[0].major_tick_line_color = creature_plot.xaxis[0].minor_tick_line_color = \
+      creature_plot.yaxis[0].minor_tick_line_color = creature_plot.yaxis[0].major_tick_line_color = "white"
+    creature_plot.title.text_color = creature_plot.xaxis[0].major_label_text_color = \
+      creature_plot.yaxis[0].major_label_text_color = "white"
+    creature_plot.xaxis[0].axis_line_color = creature_plot.yaxis[0].axis_line_color = "white"
 
-    creature_plot.circle(x_iter, y_grass, legend_label="Grass", fill_color="green")
+    creature_plot.circle(x_iter, y_grass, legend_label="Grass", fill_color="green", size=5)
     creature_plot.line(x_iter, y_grass, legend_label="Grass", line_color="green", line_width=2)
 
-    creature_plot.square(x_iter, y_sheep, legend_label="Sheep", fill_color="#ffffff")
+    creature_plot.square(x_iter, y_sheep, legend_label="Sheep", fill_color="#ffffff", size=5)
     creature_plot.line(x_iter, y_sheep, legend_label="Sheep", line_color="#ffffff", line_width=2)
 
-    creature_plot.triangle(x_iter, y_wolves, legend_label="Wolves", fill_color="red", line_color="red")
+    creature_plot.triangle(x_iter, y_wolves, legend_label="Wolves", fill_color="red", line_color="red", size=5)
     creature_plot.line(x_iter, y_wolves, legend_label="Wolves", line_color="red", line_width=2)
 
     # creature_plot.legend.background_fill_color = "#e6e6e6"; creature_plot.legend_label.background_fill_alpha = 0.25
@@ -115,27 +114,27 @@ def index():
     iter2 = np.hstack((dframe2['iter'][::-1], dframe2['iter']))
 
     TOOLS = "pan,box_zoom,undo,reset,save"
-    creature_plot2 = figure(x_range=(1, len(dframe2['iter'])-1), y_range=(0, 1), title="Population Evolution (Shares)",
+    creature_plot2 = figure(x_range=(1, max(len(dframe2['iter']), 2)), y_range=(0, 1), title="Population Evolution (Shares)",
                             tools=TOOLS, width=700, height=350, toolbar_location="above")
     creature_plot2.grid.minor_grid_line_color = '#eeeeee'
 
-    creature_plot2.patches([iter2] * len(areas), [areas[cat] for cat in categories], color=colors, alpha=1,
-                           line_color=None)
+    # creature_plot2.patches([iter2] * len(areas), [areas[cat] for cat in categories], color=colors, alpha=1,
+    #                        line_color=None)
 
     creature_plot2.min_border_left = 20; creature_plot2.min_border_right = 20
-    creature_plot2.xaxis.axis_label = "Iteration"
-    creature_plot2.yaxis.axis_label = "Share"
+    creature_plot2.xaxis[0].axis_label = "Iteration"
+    creature_plot2.yaxis[0].axis_label = "Share"
     creature_plot2.border_fill_color = "black"
-    creature_plot2.xaxis.axis_label_text_color = \
-      creature_plot2.yaxis.axis_label_text_color = "white"
-    creature_plot2.xaxis.major_tick_line_color = creature_plot2.xaxis.minor_tick_line_color = \
-      creature_plot2.yaxis.minor_tick_line_color = creature_plot2.yaxis.major_tick_line_color = "white"
-    creature_plot2.title.text_color = creature_plot2.xaxis.major_label_text_color = \
-      creature_plot2.yaxis.major_label_text_color = "white"
-    creature_plot2.xaxis.axis_line_color = creature_plot2.yaxis.axis_line_color = "white"
+    creature_plot2.xaxis[0].axis_label_text_color = \
+      creature_plot2.yaxis[0].axis_label_text_color = "white"
+    creature_plot2.xaxis[0].major_tick_line_color = creature_plot2.xaxis[0].minor_tick_line_color = \
+      creature_plot2.yaxis[0].minor_tick_line_color = creature_plot2.yaxis[0].major_tick_line_color = "white"
+    creature_plot2.title.text_color = creature_plot2.xaxis[0].major_label_text_color = \
+      creature_plot2.yaxis[0].major_label_text_color = "white"
+    creature_plot2.xaxis[0].axis_line_color = creature_plot2.yaxis[0].axis_line_color = "white"
 
     for a, area in enumerate(areas):
-      creature_plot2.patch(iter2, areas[area], color=colors[a], alpha=1, line_color=None)
+      creature_plot2.patch(x=iter2, y=areas[area], color=colors[a], alpha=1, line_color=None)
 
     # creature_plot2.legend_label.background_fill_color = "#e6e6e6"
     # creature_plot2.legend_label.background_fill_alpha = 0.4
@@ -148,16 +147,14 @@ def index():
     doc_id = html_text2[re.search("docid", html_text2).start() + 8: re.search("docid", html_text2).start() + 44]
     # element_id = script_1[re.search("elementid", script_1).start() + 12: re.search("elementid", script_1).start() + 48]
     element_id2 = div2[re.search("div id", div2).start() + 8: re.search("div id", div2).start() + 44]
-    js_script2 = html_text2[re.search(r"function()", html_text2).start() - 8 : re.search("Bokeh.embed.embed_items",
+    js_script2 = html_text2[re.search(r"function()", html_text).start() - 8 : re.search("Bokeh.embed.embed_items",
                                                                                          html_text2).start() + 61]
-    # print(html_text2)
-    # print(element_id2)
     plots_created = True
-    return render_template('index.html', element_id=element_id, js_script=js_script, plots_created=plots_created,
+    return render_template('index.html', resources=CDN.render(), element_id=element_id, js_script=js_script, plots_created=plots_created,
                            element_id2=element_id2, js_script2=js_script2, terrain_size=terrain_size, grass=grass,
                            sheep=sheep, wolves=wolves, simulation_runs=simulation_runs, grass_reproduction_rate=grass_reproduction_rate,
                            sheep_reproduction_rate=sheep_reproduction_rate, wolf_reproduction_rate=wolf_reproduction_rate,
                            grass_life=grass_life, sheep_life=sheep_life, wolf_life=wolf_life, div1=div1, div2=div2, script_1=script_1, script_2=script_2, creature_plot=creature_plot)
 
 if __name__ == "__main__":
-  app.run(debug=False)
+  app.run(debug=True)
