@@ -9,7 +9,6 @@ from bokeh.resources import CDN
 from jinja2 import Environment
 import re
 
-# env = Environment(extensions=['jinja2.ext.autoescape'])
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ITSASECRET"
 
@@ -71,27 +70,18 @@ def index():
 
     creature_plot.circle(x_iter, y_grass, legend_label="Grass", fill_color="green", size=5)
     creature_plot.line(x_iter, y_grass, legend_label="Grass", line_color="green", line_width=2)
-
     creature_plot.square(x_iter, y_sheep, legend_label="Sheep", fill_color="#ffffff", size=5)
     creature_plot.line(x_iter, y_sheep, legend_label="Sheep", line_color="#ffffff", line_width=2)
-
     creature_plot.triangle(x_iter, y_wolves, legend_label="Wolves", fill_color="red", line_color="red", size=5)
     creature_plot.line(x_iter, y_wolves, legend_label="Wolves", line_color="red", line_width=2)
 
-    # creature_plot.legend.background_fill_color = "#e6e6e6"; creature_plot.legend_label.background_fill_alpha = 0.25
-    # creature_plot.legend.label_text_font_style = "bold"
-
     html_text = file_html(creature_plot, CDN, "Population Evolution")
     script_1, div1 = components(creature_plot)
-    #show(creature_plot)
-    # doc_id = html_text[re.search("docid", html_text).start() + 8: re.search("docid", html_text).start() + 44]
-    # element_id = script_1[re.search("elementid", script_1).start() + 12: re.search("elementid", script_1).start() + 48]
     element_id = div1[re.search("div id", div1).start() + 8: re.search("div id", div1).start() + 44]
     js_script = html_text[re.search(r"function()", html_text).start() - 8 : re.search("Bokeh.embed.embed_items",
                                                                                       html_text).start() + 61]
 
     ### (2) Population Stacked Share Plot
-
     dframe2 = dframe[:]
     dframe2['Grass Share'] = dframe2['grass_count'] / (
     dframe2['grass_count'] + dframe2['sheep_count'] + dframe2['wolf_count'])
@@ -117,10 +107,6 @@ def index():
     creature_plot2 = figure(x_range=(1, max(len(dframe2['iter']), 2)), y_range=(0, 1), title="Population Evolution (Shares)",
                             tools=TOOLS, width=700, height=350, toolbar_location="above")
     creature_plot2.grid.minor_grid_line_color = '#eeeeee'
-
-    # creature_plot2.patches([iter2] * len(areas), [areas[cat] for cat in categories], color=colors, alpha=1,
-    #                        line_color=None)
-
     creature_plot2.min_border_left = 20; creature_plot2.min_border_right = 20
     creature_plot2.xaxis[0].axis_label = "Iteration"
     creature_plot2.yaxis[0].axis_label = "Share"
@@ -135,17 +121,11 @@ def index():
 
     for a, area in enumerate(areas):
       creature_plot2.patch(x=iter2, y=areas[area], color=colors[a], alpha=1, line_color=None)
-
-    # creature_plot2.legend_label.background_fill_color = "#e6e6e6"
-    # creature_plot2.legend_label.background_fill_alpha = 0.4
-    # creature_plot2.legend_label.label_text_font_style = "bold"
-
     creature_plot2.yaxis[0].formatter = NumeralTickFormatter(format="0%")
 
     html_text2 = file_html(creature_plot2, CDN, "Population Evolution")
     script_2, div2 = components(creature_plot2)
     doc_id = html_text2[re.search("docid", html_text2).start() + 8: re.search("docid", html_text2).start() + 44]
-    # element_id = script_1[re.search("elementid", script_1).start() + 12: re.search("elementid", script_1).start() + 48]
     element_id2 = div2[re.search("div id", div2).start() + 8: re.search("div id", div2).start() + 44]
     js_script2 = html_text2[re.search(r"function()", html_text).start() - 8 : re.search("Bokeh.embed.embed_items",
                                                                                          html_text2).start() + 61]
