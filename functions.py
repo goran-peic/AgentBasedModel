@@ -3,12 +3,11 @@ import random
 import numpy as np
 from actors import Grass, Sheep, Wolf
 
-# grass_reproduction_rate = 0.5; sheep_reproduction_rate = 0.2; wolf_reproduction_rate = 0.1
-# grass_life = 10; sheep_life = 10; wolf_life = 10
-
-
 def assignToTiles(dataset, creature, tiles, grass_reproduction_rate, sheep_reproduction_rate, wolf_reproduction_rate,
                   grass_life, sheep_life, wolf_life):
+                  '''
+                  This function assigns creatures (W, S, or G) to a geographic tile given the creatures parameters.
+                  '''
   list_of_creatures = []
   for row, col in tiles:
     if creature == "grass":
@@ -28,6 +27,11 @@ def assignToTiles(dataset, creature, tiles, grass_reproduction_rate, sheep_repro
 
 def seedActors(dataset, terrain_size, grass, sheep, wolves, grass_reproduction_rate, sheep_reproduction_rate,
                wolf_reproduction_rate, grass_life, sheep_life, wolf_life):
+              '''
+              This function seeds the class instances for all three types using the previously defined 
+              assignToTiles function given actor parameters. 
+              It returns a list of lists of all creatures accross the entire dataset.
+              '''
   actors.terrain_size = terrain_size
   allTileCoord = [[x, y] for x in list(range(actors.terrain_size)) for y in list(range(actors.terrain_size))]
 
